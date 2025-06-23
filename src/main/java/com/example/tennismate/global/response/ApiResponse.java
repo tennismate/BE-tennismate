@@ -24,4 +24,8 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> error(int status, String message) {
         return ApiResponse.of(status, message, null);
     }
+
+    public static <T> ApiResponse<T> error(int status, T data) {
+        return ApiResponse.of(status, "유효성 검증에 실패했습니다.", data);
+    }
 }
