@@ -2,6 +2,7 @@ package com.example.tennismate.member.controller;
 
 import com.example.tennismate.global.response.ApiResponse;
 import com.example.tennismate.member.application.service.MemberService;
+import com.example.tennismate.member.application.service.impl.MemberServiceImpl;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
