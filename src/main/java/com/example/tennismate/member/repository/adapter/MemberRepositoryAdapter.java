@@ -17,4 +17,9 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
     public void register(Member member) {
 
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
 }

@@ -4,4 +4,6 @@ import com.example.tennismate.member.entity.Member;
 
 public interface MemberRepositoryPort {
     void register(Member member);
+
+    boolean existsByEmail(String email);
 }
