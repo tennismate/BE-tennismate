@@ -38,4 +38,8 @@ public class Member extends BaseEntity {
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberRole role;
+
+    public static Member of(String email, String password, String nickname, String phoneNumber, Integer age, String profileImageUrl, String coverImageUrl, MemberRole role) {
+        return new Member(email, password, nickname, phoneNumber, age, profileImageUrl, coverImageUrl, role);
+    }
 }
