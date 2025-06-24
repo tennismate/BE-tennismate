@@ -6,4 +6,6 @@ public interface MemberRepositoryPort {
     void register(Member member);
 
     boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
 }

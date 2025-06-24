@@ -15,11 +15,16 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
 
     @Override
     public void register(Member member) {
-
+        memberRepository.save(member);
     }
 
     @Override
     public boolean existsByEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return memberRepository.existsByNickname(nickname);
     }
 }
