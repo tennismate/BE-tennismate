@@ -30,4 +30,7 @@ public record MemberRegisterRequest(
         String phoneNumber,
         Integer age
 ) {
+        public static MemberRegisterRequest of(String email, String password, String nickname, String phoneNumber, Integer age) {
+                return new MemberRegisterRequest(email, password, nickname, phoneNumber, age);
+        }
 }
