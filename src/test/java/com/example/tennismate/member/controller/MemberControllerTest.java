@@ -55,4 +55,11 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.message").value("요청이 성공했습니다."))
                 .andExpect(jsonPath("$.data").value("회원가입이 완료되었습니다."));
     }
+
+    // TODO : 중복 이메일 예외처리 검증
+
+    // TODO : 중복 닉네임 예외처리 검증
+
+    // TODO : @Valid 관련 예외처리 올바르게 검증되는지 테스트
+
 }
