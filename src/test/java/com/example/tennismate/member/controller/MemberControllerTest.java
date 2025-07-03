@@ -109,7 +109,6 @@ public class MemberControllerTest {
 
     }
 
-    // TODO : @Valid 관련 예외처리 올바르게 검증되는지 테스트
     @DisplayName(value = "회원가입 요청 유효성 검증 실패 테스트")
     @ParameterizedTest(name = "[{index}] {4}")
     @CsvSource(
