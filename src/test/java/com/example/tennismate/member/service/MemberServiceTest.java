@@ -1,5 +1,7 @@
 package com.example.tennismate.member.service;
 
+import com.example.tennismate.global.exception.custom.DuplicatedException;
+import com.example.tennismate.global.exception.errorcode.ErrorCode;
 import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.example.tennismate.member.application.service.impl.MemberServiceImpl;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;
@@ -12,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -46,6 +50,54 @@ public class MemberServiceTest {
 
         // then
         verify(memberRepositoryPort, times(1)).register(any(Member.class));
+
+    }
+
+    @Test
+    @DisplayName(value = "회원가입 실패 - 중복된 이메일")
+    void givenMemberRegisterRequest_whenEmailDuplicated_thenThrowsException() {
+        // given
+        MemberRegisterRequest request = MemberRegisterRequest.of(
+                "duplicated@email.com",
+                "testPassword123!",
+                "testNickname",
+                "010-1111-2222",
+                25
+        );
+
+        // when
+        when(memberRepositoryPort.existsByEmail(request.email())).thenReturn(true);
+
+        // then
+        DuplicatedException exception = assertThrows(DuplicatedException.class, () -> {
+            memberService.register(request);
+        });
+        assertEquals(ErrorCode.DUPLICATED_EMAIL, exception.getErrorCode());
+        verify(memberRepositoryPort, never()).register(any(Member.class));
+
+    }
+
+    @Test
+    @DisplayName(value = "회원가입 실패 - 중복된 닉네임")
+    void givenMemberRegisterRequest_whenDuplicatedNickname_thenThrowsException() {
+        // given
+        MemberRegisterRequest request = MemberRegisterRequest.of(
+                "test@email.com",
+                "testPassword123!",
+                "duplicatedNickname",
+                "010-1111-2222",
+                25
+        );
+
+        // when
+        when(memberRepositoryPort.existsByNickname(request.nickname())).thenReturn(true);
+
+        // then
+        DuplicatedException exception = assertThrows(DuplicatedException.class, () -> {
+            memberService.register(request);
+        });
+        assertEquals(ErrorCode.DUPLICATED_NICKNAME, exception.getErrorCode());
+        verify(memberRepositoryPort, never()).register(any(Member.class));
 
     }
 }
