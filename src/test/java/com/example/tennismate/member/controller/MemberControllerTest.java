@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
+@DisplayName(value = "회원 컨트롤러 테스트")
 public class MemberControllerTest {
 
     @Autowired

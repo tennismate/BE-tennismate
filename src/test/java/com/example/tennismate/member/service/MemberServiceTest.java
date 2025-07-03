@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName(value = "회원 서비스 테스트")
 public class MemberServiceTest {
     @InjectMocks
     private MemberServiceImpl memberService;
@@ -99,5 +100,33 @@ public class MemberServiceTest {
         assertEquals(ErrorCode.DUPLICATED_NICKNAME, exception.getErrorCode());
         verify(memberRepositoryPort, never()).register(any(Member.class));
 
+    }
+
+    @Test
+    @DisplayName(value = "비밀번호 암호화 테스트")
+    void givenMemberRegisterRequestAndRawPassword_whenEncodingPassword_thenEqualPassword() {
+        // given
+        String rawPassword = "rawPassword123!@";
+        String encodedPassword = "encodedPassword";
+        MemberRegisterRequest request = MemberRegisterRequest.of(
+                "test@email.com",
+                rawPassword,
+                "testNickname",
+                "010-1111-2222",
+                25
+        );
+
+        // when
+        when(memberRepositoryPort.existsByEmail(request.email())).thenReturn(false);
+        when(memberRepositoryPort.existsByNickname(request.nickname())).thenReturn(false);
+        when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
+
+        memberService.register(request);
+
+        // then
+        verify(passwordEncoder, times(1)).encode(rawPassword);
+        verify(memberRepositoryPort).register(argThat(member ->
+                member.getPassword().equals(encodedPassword)
+        ));
     }
 }
