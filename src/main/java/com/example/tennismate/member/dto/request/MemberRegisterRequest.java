@@ -25,7 +25,7 @@ public record MemberRegisterRequest(
         @NotBlank(message = "휴대폰 번호는 필수 입력사항입니다.")
         @Pattern(
                 regexp = "^010-\\d{4}-\\d{4}$",
-                message = "휴대폰 번호는 010-XXXX-XXXX 형식으로 입력해주세요"
+                message = "휴대폰 번호는 010-XXXX-XXXX 형식으로 입력해주세요."
         )
         String phoneNumber,
         Integer age
