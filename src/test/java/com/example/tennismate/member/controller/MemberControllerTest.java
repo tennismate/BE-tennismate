@@ -1,7 +1,7 @@
 package com.example.tennismate.member.controller;
 
-import com.example.tennismate.global.exception.custom.DuplicatedException;
-import com.example.tennismate.global.exception.errorcode.ErrorCode;
+import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
+import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
 import com.example.tennismate.member.application.service.MemberService;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;

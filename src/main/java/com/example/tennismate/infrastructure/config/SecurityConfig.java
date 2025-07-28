@@ -1,4 +1,4 @@
-package com.example.tennismate.global.config;
+package com.example.tennismate.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

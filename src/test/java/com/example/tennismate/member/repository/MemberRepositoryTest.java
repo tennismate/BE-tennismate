@@ -1,7 +1,7 @@
 package com.example.tennismate.member.repository;
 
 import com.example.tennismate.global.config.TestQuerydslConfig;
-import com.example.tennismate.global.enums.MemberRole;
+import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.member.entity.Member;
 import com.example.tennismate.member.repository.adapter.MemberRepositoryAdapter;
 import org.junit.jupiter.api.DisplayName;

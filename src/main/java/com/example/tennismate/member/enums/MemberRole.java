@@ -1,4 +1,4 @@
-package com.example.tennismate.global.enums;
+package com.example.tennismate.member.enums;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.example.tennismate.global.exception.handler;
+package com.example.tennismate.infrastructure.exception.handler;
 
 import com.example.tennismate.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;

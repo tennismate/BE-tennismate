@@ -1,7 +1,7 @@
 package com.example.tennismate.member.entity;
 
 import com.example.tennismate.global.entity.BaseEntity;
-import com.example.tennismate.global.enums.MemberRole;
+import com.example.tennismate.member.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
