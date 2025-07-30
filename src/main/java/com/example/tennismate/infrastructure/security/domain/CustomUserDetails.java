@@ -13,12 +13,14 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
     private final Long id;
     private final String email;
+    private final String nickname;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(Member member) {
         this.id = member.getId();
         this.email = member.getEmail();
+        this.nickname = member.getNickname();
         this.password = member.getPassword();
         this.authorities = List.of(new SimpleGrantedAuthority(member.getRole().name()));
     }
