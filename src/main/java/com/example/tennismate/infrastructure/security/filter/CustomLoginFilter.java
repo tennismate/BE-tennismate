@@ -78,10 +78,27 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         // 4. 실제 데이터를 담아 응답 DTO 생성
         MemberLoginResponse loginResponse = MemberLoginResponse.of(email, nickname, role, accessToken, refreshToken);
-        ApiResponse<MemberLoginResponse> apiResponse = ApiResponse.of(200, "로그인에 성공하였습니다", loginResponse);
+        ApiResponse<MemberLoginResponse> apiResponse = ApiResponse.ok("로그인에 성공하였습니다", loginResponse);
 
         // 5. JSON 응답 전송
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        log.info("로그인 실패");
+
+        // 1. HTTP 상태 코드를 401 unauthorized 로 설정
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        // 2. 응답 컨텐츠 타입을 JSON 으로 설정
+        response.setContentType("application/json;charset=UTF-8");
+
+        // 3. 실패 메시지를 담은 응답 전송
+        response.getWriter().write(objectMapper.writeValueAsString(
+                ApiResponse.error(401, "이메일 또는 비밀번호가 일치하지 않습니다.")
+        ));
+
     }
 }
