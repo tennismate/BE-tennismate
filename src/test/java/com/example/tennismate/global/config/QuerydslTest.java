@@ -1,6 +1,6 @@
 package com.example.tennismate.global.config;
 
-import com.example.tennismate.global.enums.MemberRole;
+import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.member.entity.Member;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
