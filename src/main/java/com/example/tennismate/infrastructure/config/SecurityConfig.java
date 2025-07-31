@@ -63,7 +63,7 @@ public class SecurityConfig {
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/members/register", "/api/v1/members/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/members/signup", "/api/v1/members/login").permitAll()
                 .anyRequest().authenticated()
         );
 
