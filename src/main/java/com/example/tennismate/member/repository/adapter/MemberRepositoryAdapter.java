@@ -7,6 +7,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberRepositoryAdapter implements MemberRepositoryPort {
@@ -26,5 +28,10 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
     @Override
     public boolean existsByNickname(String nickname) {
         return memberRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public Optional<Member> findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 }

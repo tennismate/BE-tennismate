@@ -1,8 +1,8 @@
 package com.example.tennismate.member.application.service.impl;
 
-import com.example.tennismate.global.enums.MemberRole;
-import com.example.tennismate.global.exception.custom.DuplicatedException;
-import com.example.tennismate.global.exception.errorcode.ErrorCode;
+import com.example.tennismate.member.enums.MemberRole;
+import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
+import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
 import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.example.tennismate.member.application.service.MemberService;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;

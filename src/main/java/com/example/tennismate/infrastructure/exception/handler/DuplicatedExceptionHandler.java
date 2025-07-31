@@ -1,7 +1,7 @@
-package com.example.tennismate.global.exception.handler;
+package com.example.tennismate.infrastructure.exception.handler;
 
-import com.example.tennismate.global.exception.custom.DuplicatedException;
-import com.example.tennismate.global.exception.errorcode.ErrorCode;
+import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
+import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
 import com.example.tennismate.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

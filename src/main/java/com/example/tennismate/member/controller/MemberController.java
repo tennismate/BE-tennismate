@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping(path = "/register")
+    @PostMapping(path = "/signup")
     public ResponseEntity<ApiResponse<?>> register(
             @Valid @RequestBody MemberRegisterRequest memberRegisterRequest
     ) {

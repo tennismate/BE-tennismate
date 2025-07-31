@@ -1,4 +1,4 @@
-package com.example.tennismate.global.exception.errorcode;
+package com.example.tennismate.infrastructure.exception.errorcode;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
