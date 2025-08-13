@@ -68,7 +68,7 @@ public class SecurityConfig {
         );
 
         // CustomLoginFilter 를 UsernamePasswordAuthenticationFilter 자리에 끼워넣음
-        http.addFilterAfter(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
