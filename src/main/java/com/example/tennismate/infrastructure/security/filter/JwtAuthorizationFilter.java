@@ -22,8 +22,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 1. 요청 헤더에서 토큰 추출
         String token = resolveToken(request);
 
+        // 2. 토큰 유효성 검증
+        if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
+            // 3. 토큰에서 사용자 정보 추출
+            Claims info = jwtProvider.getUserInfoFromToken(token);
+            String email = info.get("email", String.class);
 
+            // 4. 인증 처리
+            try {
 
+            } catch (Exception e) {
+
+            }
+        }
 
 
         // 다음 필터로 요청 전달
