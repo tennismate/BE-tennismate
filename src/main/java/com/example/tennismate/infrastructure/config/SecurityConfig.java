@@ -63,12 +63,13 @@ public class SecurityConfig {
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                // 회원가입, 로그인 경로 오픈
                 .requestMatchers(HttpMethod.POST, "/api/v1/members/signup", "/api/v1/members/login").permitAll()
                 .anyRequest().authenticated()
         );
 
         // CustomLoginFilter 를 UsernamePasswordAuthenticationFilter 자리에 끼워넣음
-        http.addFilterAfter(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
