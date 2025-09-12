@@ -30,6 +30,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             // 4. 인증 처리
             try {
+                // TODO : 4-1. 토큰의 이메일로 DB 에서 사용자 정보 조회
+
+                // TODO : 4-2. 인증 객체 생성
+
+                // TODO : 4-3. SecurityContext 에 인증 정보 저장
+
 
             } catch (Exception e) {
 
@@ -38,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 
 
-        // 다음 필터로 요청 전달
+        // 5. 다음 필터로 요청 전달
         filterChain.doFilter(request, response);
     }
 
