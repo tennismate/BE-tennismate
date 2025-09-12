@@ -1,6 +1,6 @@
-package com.example.tennismate.global.exception.custom;
+package com.example.tennismate.infrastructure.exception.custom;
 
-import com.example.tennismate.global.exception.errorcode.ErrorCode;
+import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package com.example.tennismate.global.config;
 
-import com.example.tennismate.global.enums.MemberRole;
+import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.member.entity.Member;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -8,12 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.tennismate.member.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 @DisplayName(value = "Querydsl 테스트")
