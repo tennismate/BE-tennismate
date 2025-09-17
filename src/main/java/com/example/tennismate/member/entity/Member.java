@@ -35,11 +35,35 @@ public class Member extends BaseEntity {
     @Column(name = "cover_image_url", columnDefinition = "TEXT")
     private String coverImageUrl;
 
+    @Column(name = "refresh_token", columnDefinition = "TEXT")
+    private String refreshToken;
+
     @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private MemberRole role;
 
-    public static Member of(String email, String password, String nickname, String phoneNumber, Integer age, String profileImageUrl, String coverImageUrl, MemberRole role) {
-        return new Member(email, password, nickname, phoneNumber, age, profileImageUrl, coverImageUrl, role);
+    /**
+     * refresh Token 을 쉽게 업데이트하기 위한 비즈니스 메서드
+     * @param refreshToken : 리프레시 토큰
+     */
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    /**
+     * Member 객체 생성을 위한 of 메서드
+     * @param email : 사용자 이메일 ID
+     * @param password : 패스워드
+     * @param nickname : 닉네임
+     * @param phoneNumber : 휴대폰 번호
+     * @param age : 나이
+     * @param profileImageUrl : 프로필 이미지 url
+     * @param coverImageUrl : 커버 이미지 url
+     * @param refreshToken : 리프레시 토큰
+     * @param role : 사용자 권한
+     * @return : Member 객체
+     */
+    public static Member of(String email, String password, String nickname, String phoneNumber, Integer age, String profileImageUrl, String coverImageUrl, String refreshToken, MemberRole role) {
+        return new Member(email, password, nickname, phoneNumber, age, profileImageUrl, coverImageUrl, refreshToken, role);
     }
 }
