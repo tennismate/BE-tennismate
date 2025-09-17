@@ -40,6 +40,10 @@ out/
 *.yaml
 *.yml
 
+
+.DS_Store
+**/gradle/.DS_Store
+
 #src/main/generated/
 
 #src/main/resources/application.properties
