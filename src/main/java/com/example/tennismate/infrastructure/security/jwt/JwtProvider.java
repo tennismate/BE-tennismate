@@ -56,15 +56,15 @@ public class JwtProvider {
 
     /**
      * Refresh Token 생성
-     * @param id : 회원 ID 값
+     * @param email : 회원 ID 값
      * @return : Refresh Token
      */
-    public String createRefreshToken(Long id) {
+    public String createRefreshToken(String email) {
         long now = System.currentTimeMillis();
         Date refreshTokenExpiresIn = new Date(now + this.refreshTokenExpirationMs);
 
         return Jwts.builder()
-                .claims(Map.of("id", id))
+                .claims(Map.of("email", email))
                 .expiration(refreshTokenExpiresIn)
                 .signWith(secretKey)
                 .compact();
@@ -102,12 +102,12 @@ public class JwtProvider {
     }
 
     /**
-     * 토큰에서 사용자 ID 값 추출하는 메서드
+     * 토큰에서 사용자 이메일 값 추출하는 메서드
      * @param token : JWT 토큰
-     * @return : 사용자 ID 값 반환
+     * @return : 사용자 이메일 값 반환
      */
-    public Long getUserIdFromToken(String token) {
-        return jwtParser.parseSignedClaims(token).getPayload().get("id", Long.class);
+    public String getUserEmailFromToken(String token) {
+        return jwtParser.parseSignedClaims(token).getPayload().get("email", String.class);
     }
 
 }
