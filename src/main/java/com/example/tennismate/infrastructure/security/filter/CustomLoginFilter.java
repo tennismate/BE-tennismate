@@ -74,7 +74,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         // 3. Jwt Provider 를 사용해 토큰 생성 (Access Token 에 id 포함)
         String accessToken = jwtProvider.createAccessToken(id, email, role);
-        String refreshToken = jwtProvider.createRefreshToken();
+        String refreshToken = jwtProvider.createRefreshToken(id);
 
         // 4. 실제 데이터를 담아 응답 DTO 생성
         MemberLoginResponse loginResponse = MemberLoginResponse.of(email, nickname, role, accessToken, refreshToken);

@@ -56,13 +56,15 @@ public class JwtProvider {
 
     /**
      * Refresh Token 생성
+     * @param id : 회원 ID 값
      * @return : Refresh Token
      */
-    public String createRefreshToken() {
+    public String createRefreshToken(Long id) {
         long now = System.currentTimeMillis();
         Date refreshTokenExpiresIn = new Date(now + this.refreshTokenExpirationMs);
 
         return Jwts.builder()
+                .claims(Map.of("id", id))
                 .expiration(refreshTokenExpiresIn)
                 .signWith(secretKey)
                 .compact();
@@ -98,4 +100,14 @@ public class JwtProvider {
         // 미리 만들어둔 파서를 사용하여 토큰의 내용의 내용물인 Claims(payload) 를 추출
         return jwtParser.parseSignedClaims(token).getPayload();
     }
+
+    /**
+     * 토큰에서 사용자 ID 값 추출하는 메서드
+     * @param token : JWT 토큰
+     * @return : 사용자 ID 값 반환
+     */
+    public Long getUserIdFromToken(String token) {
+        return jwtParser.parseSignedClaims(token).getPayload().get("id", Long.class);
+    }
+
 }
