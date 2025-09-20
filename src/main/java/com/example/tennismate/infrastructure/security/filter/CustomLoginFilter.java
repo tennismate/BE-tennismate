@@ -32,7 +32,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     // 1. 생성자
     public CustomLoginFilter(JwtProvider jwtProvider, ObjectMapper objectMapper, MemberRepositoryPort memberRepositoryPort) {
-        // 2. 부모 클래서 생성자 호출
+        // 2. 부모 클래스 생성자 호출
         // 로그인 URI 에 대한 요청을 가로챌 수 있도록 설정
         super(new AntPathRequestMatcher("/api/v1/members/login", "POST"));
         this.jwtProvider = jwtProvider;
