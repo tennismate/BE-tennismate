@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -111,7 +112,18 @@ public class JwtProvider {
         return jwtParser.parseSignedClaims(token).getPayload().get("email", String.class);
     }
 
+    /**
+     * 요청 헤더에서 리프레시 토큰을 반환하는 메서드
+     * @param request : 요청 헤더
+     * @return : refresh token 또는 null 반환
+     */
     public String resolveRefreshToken(HttpServletRequest request) {
+        String refreshToken = request.getHeader("Refresh-Token");
+
+        if (StringUtils.hasText(refreshToken)) {
+            return refreshToken;
+        }
+
         return null;
     }
 }
