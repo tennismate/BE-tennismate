@@ -3,6 +3,7 @@ package com.example.tennismate.infrastructure.config;
 import com.example.tennismate.infrastructure.security.filter.CustomLoginFilter;
 import com.example.tennismate.infrastructure.security.filter.JwtAuthorizationFilter;
 import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
+import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserDetailsService userDetailsService;
+    private final MemberRepositoryPort memberRepositoryPort;
 
     private static final String[] SWAGGER_WHITELIST = {
             "/swagger-ui/**",
@@ -48,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public CustomLoginFilter customLoginFilter() throws Exception {
-        CustomLoginFilter customLoginFilter = new CustomLoginFilter(jwtProvider, objectMapper);
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(jwtProvider, objectMapper, memberRepositoryPort);
         customLoginFilter.setAuthenticationManager(authenticationManager());
         return customLoginFilter;
     }
