@@ -1,15 +1,15 @@
 package com.example.tennismate.member.application.service.impl;
 
-import com.example.tennismate.infrastructure.exception.custom.InvalidTokenException;
-import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
-import com.example.tennismate.member.dto.response.TokenResponse;
-import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
+import com.example.tennismate.infrastructure.exception.custom.InvalidTokenException;
 import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
+import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
 import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.example.tennismate.member.application.service.MemberService;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;
+import com.example.tennismate.member.dto.response.TokenResponse;
 import com.example.tennismate.member.entity.Member;
+import com.example.tennismate.member.enums.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,8 @@ public class MemberServiceImpl implements MemberService {
             throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
         }
 
-        // TODO : 2. Refresh Token 에서 이메일 추출
+        // 2. Refresh Token 에서 이메일 추출
+        String email = jwtProvider.getUserInfoFromToken(refreshToken).get("email", String.class);
 
         // TODO : 3. DB 에 저장된 Refresh Token 과 일치하는지 확인
 
