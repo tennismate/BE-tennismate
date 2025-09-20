@@ -113,6 +113,21 @@ public class JwtProvider {
     }
 
     /**
+     * 요청 헤더에서 "Bearer " 접두사를 제거하고 순수 토큰을 반환하는 메서드
+     * @param request : 요청 헤더
+     * @return : 순수 토큰 or null 반환
+     */
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
+
+    /**
      * 요청 헤더에서 리프레시 토큰을 반환하는 메서드
      * @param request : 요청 헤더
      * @return : refresh token 또는 null 반환
