@@ -42,7 +42,7 @@ public class MemberController {
 
 
         return ResponseEntity.ok(
-                ApiResponse.ok("토큰이 정상적으로 발급되었습니다.")
+                ApiResponse.ok("토큰이 정상적으로 발급되었습니다.", tokenResponse)
         );
     }
 }
