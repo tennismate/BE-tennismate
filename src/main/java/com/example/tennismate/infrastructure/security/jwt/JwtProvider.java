@@ -3,6 +3,7 @@ package com.example.tennismate.infrastructure.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -110,4 +111,7 @@ public class JwtProvider {
         return jwtParser.parseSignedClaims(token).getPayload().get("email", String.class);
     }
 
+    public String resolveRefreshToken(HttpServletRequest request) {
+        return null;
+    }
 }

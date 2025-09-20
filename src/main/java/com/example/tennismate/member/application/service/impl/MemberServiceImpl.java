@@ -1,5 +1,6 @@
 package com.example.tennismate.member.application.service.impl;
 
+import com.example.tennismate.member.dto.response.TokenResponse;
 import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
 import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
@@ -35,6 +36,11 @@ public class MemberServiceImpl implements MemberService {
 
         // member save
         memberRepository.register(member);
+    }
+
+    @Override
+    public TokenResponse reissueToken(String refreshToken) {
+        return null;
     }
 
     /**

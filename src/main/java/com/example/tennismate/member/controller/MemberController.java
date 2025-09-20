@@ -1,8 +1,10 @@
 package com.example.tennismate.member.controller;
 
 import com.example.tennismate.global.response.ApiResponse;
+import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
 import com.example.tennismate.member.application.service.MemberService;
 import com.example.tennismate.member.dto.request.MemberRegisterRequest;
+import com.example.tennismate.member.dto.response.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/v1/members")
 public class MemberController {
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping(path = "/signup")
     public ResponseEntity<ApiResponse<?>> register(
@@ -31,9 +34,11 @@ public class MemberController {
 
     @PostMapping(path = "/refresh")
     public ResponseEntity<ApiResponse<?>> refresh(HttpServletRequest request) {
-        // TODO : 1. 요청 헤더에서 Refresh Token 추출
+        // 1. 요청 헤더에서 Refresh Token 추출
+        String refreshToken = jwtProvider.resolveRefreshToken(request);
 
-        // TODO : 2. 서비스를 호출하여 새로운 토큰 발급
+        // 2. 서비스를 호출하여 새로운 토큰 발급
+        TokenResponse tokenResponse = memberService.reissueToken(refreshToken);
 
 
         return ResponseEntity.ok(
