@@ -1,5 +1,7 @@
 package com.example.tennismate.member.application.service.impl;
 
+import com.example.tennismate.infrastructure.exception.custom.InvalidTokenException;
+import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
 import com.example.tennismate.member.dto.response.TokenResponse;
 import com.example.tennismate.member.enums.MemberRole;
 import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepositoryPort memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Override
     @Transactional
@@ -40,6 +43,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public TokenResponse reissueToken(String refreshToken) {
+        // 1. Refresh Token 유효성 검증
+        if (jwtProvider.validateToken(refreshToken)) {
+            throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
+        }
+
+        // TODO : 2. Refresh Token 에서 이메일 추출
+
+        // TODO : 3. DB 에 저장된 Refresh Token 과 일치하는지 확인
+
+        // TODO : 4. 새로운 Access Token 생성
+
+        // TODO : 5. 새로운 Refresh Token 생성 후 DB 저장
+
         return null;
     }
 
