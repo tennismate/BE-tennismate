@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
         @Bean
         public OpenAPI openAPI() {
-                // TODO : 1. SecurityScheme 이름 정의
+                // 1. SecurityScheme 이름 정의
+                String jwtSchemeName = "jwtAuth";
 
                 // TODO : 2. API 요청 헤더에 인증 정보 포함을 위한 SecurityRequirement 객체 생성
 
