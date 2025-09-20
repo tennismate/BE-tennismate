@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
         String encodedPassword = passwordEncoder.encode(memberRegisterRequest.password());
 
         // member 객체 생성
-        Member member = Member.of(memberRegisterRequest.email(), encodedPassword, memberRegisterRequest.nickname(), memberRegisterRequest.phoneNumber(), memberRegisterRequest.age(), null, null, MemberRole.ROLE_USER);
+        Member member = Member.of(memberRegisterRequest.email(), encodedPassword, memberRegisterRequest.nickname(), memberRegisterRequest.phoneNumber(), memberRegisterRequest.age(), null, null, null, MemberRole.ROLE_USER);
 
         // member save
         memberRepository.register(member);
