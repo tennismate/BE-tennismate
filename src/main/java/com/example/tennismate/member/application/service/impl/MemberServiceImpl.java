@@ -43,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public TokenResponse reissueToken(String refreshToken) {
         // 1. Refresh Token 유효성 검증
         if (jwtProvider.validateToken(refreshToken)) {
@@ -59,11 +60,12 @@ public class MemberServiceImpl implements MemberService {
             throw new InvalidTokenException(ErrorCode.MISMATCHED_REFRESH_TOKEN);
         }
 
-        // TODO : 4. 새로운 Access Token 생성
+        // 4. 새로운 토큰 생성 및 저장
+        String newAccessToken = jwtProvider.createAccessToken(member.getId(), member.getEmail(), member.getRole().name());
+        String newRefreshToken = jwtProvider.createRefreshToken(member.getEmail());
+        member.updateRefreshToken(newRefreshToken);
 
-        // TODO : 5. 새로운 Refresh Token 생성 후 DB 저장
-
-        return null;
+        return TokenResponse.of(newAccessToken, newRefreshToken);
     }
 
     /**
