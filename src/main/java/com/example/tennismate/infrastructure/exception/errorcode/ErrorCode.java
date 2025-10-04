@@ -12,6 +12,7 @@ public enum ErrorCode {
 
     // token
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
+    MISMATCHED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Refresh Token 이 일치하지 않습니다.");
     ;
 
     private final HttpStatus status;
