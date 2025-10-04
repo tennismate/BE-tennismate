@@ -2,6 +2,7 @@ package com.example.tennismate.member.application.service.impl;
 
 import com.example.tennismate.infrastructure.exception.custom.DuplicatedException;
 import com.example.tennismate.infrastructure.exception.custom.InvalidTokenException;
+import com.example.tennismate.infrastructure.exception.custom.NotFoundException;
 import com.example.tennismate.infrastructure.exception.errorcode.ErrorCode;
 import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
 import com.example.tennismate.member.application.port.MemberRepositoryPort;
@@ -51,7 +52,12 @@ public class MemberServiceImpl implements MemberService {
         // 2. Refresh Token 에서 이메일 추출
         String email = jwtProvider.getUserInfoFromToken(refreshToken).get("email", String.class);
 
-        // TODO : 3. DB 에 저장된 Refresh Token 과 일치하는지 확인
+        // 3. DB 에 저장된 Refresh Token 과 일치하는지 확인
+        Member member = memberRepository.findMemberByEmail(email).orElseThrow(() -> new NotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+
+        if (!member.getRefreshToken().equals(refreshToken)) {
+            throw new InvalidTokenException(ErrorCode.MISMATCHED_REFRESH_TOKEN);
+        }
 
         // TODO : 4. 새로운 Access Token 생성
 
