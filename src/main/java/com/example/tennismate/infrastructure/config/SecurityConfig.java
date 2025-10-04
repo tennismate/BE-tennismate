@@ -1,8 +1,10 @@
 package com.example.tennismate.infrastructure.config;
 
+import com.example.tennismate.global.constants.AuthEndPoints;
 import com.example.tennismate.infrastructure.security.filter.CustomLoginFilter;
 import com.example.tennismate.infrastructure.security.filter.JwtAuthorizationFilter;
 import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
+import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +30,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserDetailsService userDetailsService;
-
-    private static final String[] SWAGGER_WHITELIST = {
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/swagger-resources/**",
-            "/webjars/**"
-    };
+    private final MemberRepositoryPort memberRepositoryPort;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,7 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public CustomLoginFilter customLoginFilter() throws Exception {
-        CustomLoginFilter customLoginFilter = new CustomLoginFilter(jwtProvider, objectMapper);
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(jwtProvider, objectMapper, memberRepositoryPort);
         customLoginFilter.setAuthenticationManager(authenticationManager());
         return customLoginFilter;
     }
@@ -70,9 +66,9 @@ public class SecurityConfig {
 
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                .requestMatchers(AuthEndPoints.SWAGGER_ENDPOINTS).permitAll()
                 // 회원가입, 로그인 경로 오픈
-                .requestMatchers(HttpMethod.POST, "/api/v1/members/signup", "/api/v1/members/login").permitAll()
+                .requestMatchers(HttpMethod.POST, AuthEndPoints.AUTH_PERMIT_ENDPOINTS).permitAll()
                 .anyRequest().authenticated()
         );
 

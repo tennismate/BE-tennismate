@@ -3,9 +3,11 @@ package com.example.tennismate.infrastructure.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -56,13 +58,15 @@ public class JwtProvider {
 
     /**
      * Refresh Token 생성
+     * @param email : 회원 ID 값
      * @return : Refresh Token
      */
-    public String createRefreshToken() {
+    public String createRefreshToken(String email) {
         long now = System.currentTimeMillis();
         Date refreshTokenExpiresIn = new Date(now + this.refreshTokenExpirationMs);
 
         return Jwts.builder()
+                .claims(Map.of("email", email))
                 .expiration(refreshTokenExpiresIn)
                 .signWith(secretKey)
                 .compact();
@@ -97,5 +101,44 @@ public class JwtProvider {
     public Claims getUserInfoFromToken(String token) {
         // 미리 만들어둔 파서를 사용하여 토큰의 내용의 내용물인 Claims(payload) 를 추출
         return jwtParser.parseSignedClaims(token).getPayload();
+    }
+
+    /**
+     * 토큰에서 사용자 이메일 값 추출하는 메서드
+     * @param token : JWT 토큰
+     * @return : 사용자 이메일 값 반환
+     */
+    public String getUserEmailFromToken(String token) {
+        return jwtParser.parseSignedClaims(token).getPayload().get("email", String.class);
+    }
+
+    /**
+     * 요청 헤더에서 "Bearer " 접두사를 제거하고 순수 토큰을 반환하는 메서드
+     * @param request : 요청 헤더
+     * @return : 순수 토큰 or null 반환
+     */
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
+
+    /**
+     * 요청 헤더에서 리프레시 토큰을 반환하는 메서드
+     * @param request : 요청 헤더
+     * @return : refresh token 또는 null 반환
+     */
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String refreshToken = request.getHeader("Refresh-Token");
+
+        if (StringUtils.hasText(refreshToken)) {
+            return refreshToken;
+        }
+
+        return null;
     }
 }

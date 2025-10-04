@@ -3,8 +3,10 @@ package com.example.tennismate.infrastructure.security.filter;
 import com.example.tennismate.global.response.ApiResponse;
 import com.example.tennismate.infrastructure.security.domain.CustomUserDetails;
 import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
+import com.example.tennismate.member.application.port.MemberRepositoryPort;
 import com.example.tennismate.member.dto.request.MemberLoginRequest;
 import com.example.tennismate.member.dto.response.MemberLoginResponse;
+import com.example.tennismate.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,14 +28,16 @@ import java.io.IOException;
 public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
+    private final MemberRepositoryPort memberRepositoryPort;
 
     // 1. 생성자
-    public CustomLoginFilter(JwtProvider jwtProvider, ObjectMapper objectMapper) {
-        // 2. 부모 클래서 생성자 호출
+    public CustomLoginFilter(JwtProvider jwtProvider, ObjectMapper objectMapper, MemberRepositoryPort memberRepositoryPort) {
+        // 2. 부모 클래스 생성자 호출
         // 로그인 URI 에 대한 요청을 가로챌 수 있도록 설정
         super(new AntPathRequestMatcher("/api/v1/members/login", "POST"));
         this.jwtProvider = jwtProvider;
         this.objectMapper = objectMapper;
+        this.memberRepositoryPort = memberRepositoryPort;
     }
 
     @Override
@@ -74,7 +78,15 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         // 3. Jwt Provider 를 사용해 토큰 생성 (Access Token 에 id 포함)
         String accessToken = jwtProvider.createAccessToken(id, email, role);
-        String refreshToken = jwtProvider.createRefreshToken();
+        String refreshToken = jwtProvider.createRefreshToken(email);
+
+        // 3-1. DB 에서 사용자 정보 조회
+        Member member = memberRepositoryPort.findMemberByEmail(email)
+                .orElseThrow(() -> new ServletException("Could not find member"));
+
+        // 3-2. dirty checking 또는 명시적 save 를 위해 Refresh Token 업데이트
+        member.updateRefreshToken(refreshToken);
+        memberRepositoryPort.save(member);
 
         // 4. 실제 데이터를 담아 응답 DTO 생성
         MemberLoginResponse loginResponse = MemberLoginResponse.of(email, nickname, role, accessToken, refreshToken);

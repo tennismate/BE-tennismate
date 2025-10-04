@@ -34,4 +34,9 @@ public class MemberRepositoryAdapter implements MemberRepositoryPort {
     public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
+
+    @Override
+    public void save(Member member) {
+        memberRepository.save(member);
+    }
 }

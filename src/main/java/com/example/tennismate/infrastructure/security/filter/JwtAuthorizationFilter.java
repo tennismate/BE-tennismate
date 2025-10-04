@@ -30,7 +30,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 1. 요청 헤더에서 토큰 추출
-        String token = resolveToken(request);
+        String token = jwtProvider.resolveToken(request);
 
         // 2. 토큰 유효성 검증
         if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
@@ -72,18 +72,4 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * 요청 헤더에서 "Bearer " 접두사를 제거하고 순수 토큰을 반환하는 메서드
-     * @param request : 요청 헤더
-     * @return : 순수 토큰 or null 반환
-     */
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-
-        return null;
-    }
 }
