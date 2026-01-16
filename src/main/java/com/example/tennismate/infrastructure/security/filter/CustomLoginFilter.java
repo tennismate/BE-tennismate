@@ -69,7 +69,7 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
         String nickname = userDetails.getNickname();
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
-                .orElseThrow(() -> new ServletException("User role not foudn"))
+                .orElseThrow(() -> new ServletException("User role not found"))
                 .getAuthority();
 
         // 3. Jwt Provider 를 사용해 토큰 생성 (Access Token 에 id 포함)

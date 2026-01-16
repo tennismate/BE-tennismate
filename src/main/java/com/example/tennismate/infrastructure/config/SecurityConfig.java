@@ -1,6 +1,7 @@
 package com.example.tennismate.infrastructure.config;
 
 import com.example.tennismate.infrastructure.security.filter.CustomLoginFilter;
+import com.example.tennismate.infrastructure.security.filter.JwtAuthorizationFilter;
 import com.example.tennismate.infrastructure.security.jwt.JwtProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +27,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final ObjectMapper objectMapper;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserDetailsService userDetailsService;
 
     private static final String[] SWAGGER_WHITELIST = {
             "/swagger-ui/**",
@@ -51,6 +54,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(jwtProvider, userDetailsService, objectMapper);
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF, Form Login, HTTP BASIC 비활성화
         http.csrf(AbstractHttpConfigurer::disable)
@@ -63,12 +71,17 @@ public class SecurityConfig {
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                .requestMatchers("/api/weather/**").permitAll() //403 에러 떠서 인증없이 api 접근하게만듬
+                // 회원가입, 로그인 경로 오픈
                 .requestMatchers(HttpMethod.POST, "/api/v1/members/signup", "/api/v1/members/login").permitAll()
                 .anyRequest().authenticated()
         );
 
         // CustomLoginFilter 를 UsernamePasswordAuthenticationFilter 자리에 끼워넣음
-        http.addFilterAfter(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // JwtAuthorizationFilter 를 로그인 필터 앞단에 배치
+        http.addFilterBefore(jwtAuthorizationFilter(), CustomLoginFilter.class);
 
         return http.build();
     }
