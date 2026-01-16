@@ -8,7 +8,7 @@ import java.util.*;
 public class WeatherResponse {
     private String todayWeatherStatus;
     private String todayWeatherIcon;
-    private List<DailyWeatherStatus> weatherResponses;
+    //private List<DailyWeatherStatus> weatherResponses;  다른 응답줄지는 일단 보류.. 점수? 가능성 ?
 
     @Data
     @Builder

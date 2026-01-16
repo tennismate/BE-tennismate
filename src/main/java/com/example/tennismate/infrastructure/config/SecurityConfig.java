@@ -71,6 +71,7 @@ public class SecurityConfig {
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                .requestMatchers("/api/weather/**").permitAll() //403 에러 떠서 인증없이 api 접근하게만듬
                 // 회원가입, 로그인 경로 오픈
                 .requestMatchers(HttpMethod.POST, "/api/v1/members/signup", "/api/v1/members/login").permitAll()
                 .anyRequest().authenticated()
