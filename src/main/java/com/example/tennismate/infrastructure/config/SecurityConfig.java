@@ -69,6 +69,7 @@ public class SecurityConfig {
                 .requestMatchers(AuthEndPoints.SWAGGER_ENDPOINTS).permitAll()
                 // 회원가입, 로그인 경로 오픈
                 .requestMatchers(HttpMethod.POST, AuthEndPoints.AUTH_PERMIT_ENDPOINTS).permitAll()
+                .requestMatchers("/api/courts/**").permitAll() //코트관련 api 경로 임시 오픈
                 .anyRequest().authenticated()
         );
 
