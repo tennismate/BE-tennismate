@@ -34,4 +34,8 @@ public class Address {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    public void updateCoordinates(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
