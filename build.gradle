@@ -58,6 +58,11 @@ dependencies {
     //최신형 webclient를 쓰기위함 (Reactive방식)
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+
+    //mac에서 Netty(webClient 같은 라이브러리가 내부적으로 사용) 에러없이사용하기위함
+    //runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.108.Final:aarch_64'
+
+
 }
 
 tasks.named('test') {

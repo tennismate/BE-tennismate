@@ -66,7 +66,11 @@ public class SecurityConfig {
 
         // URL 별 경로 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
+
                 .requestMatchers(AuthEndPoints.SWAGGER_ENDPOINTS).permitAll()
+
+                .requestMatchers("/api/weather/**").permitAll() //403 에러 떠서 인증없이 api 접근하게만듬
+
                 // 회원가입, 로그인 경로 오픈
                 .requestMatchers(HttpMethod.POST, AuthEndPoints.AUTH_PERMIT_ENDPOINTS).permitAll()
                 .requestMatchers("/api/courts/**").permitAll() //코트관련 api 경로 임시 오픈
