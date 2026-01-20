@@ -46,3 +46,4 @@ public class Court {
         this.parkingAvailable = parkingAvailable;
     }
 }
+
