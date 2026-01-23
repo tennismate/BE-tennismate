@@ -33,4 +33,13 @@ public class ReviewController {
         List<ReviewResponseDto> reviews = reviewService.getReviewsByCourt(courtId);
         return ResponseEntity.ok(reviews);
     }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
+        // 서비스의 삭제 로직 호출
+        reviewService.deleteReview(reviewId);
+
+        // 성공 시 데이터 없이 '244 No Content' 응답(관례)
+        return ResponseEntity.noContent().build();
+    }
 }
