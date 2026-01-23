@@ -36,7 +36,26 @@ public class ReviewService {
                 .build();
 
         // 3. 리포지토리를 통해 DB에 저장
-        return reviewRepository.save(review).getId();
+        Long savedReviewId = reviewRepository.save(review).getId();
+
+        updateCourtAverageRating(court);
+
+        return savedReviewId;
+    }
+
+    // court 테이블에 average rating 칼럼을 따로 둬서 후기가 달릴때마다 계산된 값 저장하게 한다
+    private void updateCourtAverageRating(Court court) {
+        // 해당 코트에 달린 후기 디비에서 가져옴
+        List<Review> reviews = reviewRepository.findByCourtIdOrderByCreatedAtDesc(court.getId());
+
+        //자바 stream api로 평균값 계산
+        double average = reviews.stream()
+                .mapToInt(Review::getRating) // 리뷰객체에서 점수만 가져옴
+                .average()
+                .orElse(0.0); //후기 없으면 0
+
+        // 평균값을 court엔티티에 반영
+        court.updateAverageRating(average);
     }
 
     // ReviewService.java 내 조회 메서드
