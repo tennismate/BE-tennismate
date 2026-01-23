@@ -69,4 +69,21 @@ public class ReviewService {
                 .map(ReviewResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 리뷰 삭제
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        // 1. 삭제할 리뷰가 있는지 확인, 없으면 에러발생
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다. ID: " + reviewId));
+
+        // 2. 코트 정보가져옴
+        Court court = review.getCourt();
+
+        // 3. 리뷰 삭제
+        reviewRepository.delete(review);
+
+        // 4. 리뷰가 삭제된 상태에서 평균 평점을 다시 계산해서 업데이트
+        updateCourtAverageRating(court);
+    }
 }
