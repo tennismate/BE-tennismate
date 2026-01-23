@@ -45,5 +45,9 @@ public class Court {
         this.reservationUrl = reservationUrl;
         this.parkingAvailable = parkingAvailable;
     }
+
+    public void updateAverageRating(double newAverage) {
+        this.averageRating = Math.round(newAverage * 10) / 10.0;
+    }
 }
 
